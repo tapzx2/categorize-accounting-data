@@ -1,5 +1,11 @@
 # Read Me
 
+## Next Step
+
+make "separate" and "categorize" should be 2 different programs
+
+## Old Info
+
 problem: I really don't want to do our accounting each year. It involves:
 
 - labeling each expense
