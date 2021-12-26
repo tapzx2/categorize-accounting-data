@@ -145,16 +145,21 @@ def categorize(file, output_file_name, common="common.json", categories="categor
             value_to_append = get_category(split_line, categories)
             split_line.append(value_to_append)
             append_to(split_line, output_file_name)
-            
-if sys.argv[1] == "-h":
+
+# no input
+if len(sys.argv) == 1:
+    show_help()
+# show help with -h option
+elif sys.argv[1] == "-h":
     show_help()
 elif sys.argv[1][:10] == "--separate":
     to_separate = sys.argv[1][11:]
+    print(to_separate)
     if os.path.isfile(to_separate):
         if confirm_overwrite("income.csv") and confirm_overwrite("expense.csv"):
             separate(to_separate)
     else:
-        sys.exit(f"\ncannot separate \'{to_separate}\', invalid file path")
+        sys.exit(f"\ncannot separate \'{to_separate}\', invalid file path\nplease pass a file to separate\n")
 elif sys.argv[1][:12] == "--categorize":
     to_categorize = sys.argv[1][13:]
     if os.path.isfile(to_categorize):
@@ -167,6 +172,7 @@ elif sys.argv[1][:12] == "--categorize":
         print("")
         file = open(to_categorize, 'r')
         categorize(file, output_file_name, common_values, categories_values)
+# catch invalid inputs
 else:
     print("""
     invalid option
