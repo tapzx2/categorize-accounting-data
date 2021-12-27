@@ -34,34 +34,3 @@ elif os.path.isfile(args.file):
     move_old()
     income.to_csv('./income.csv', index=False, header=False)
     expense.to_csv('./expense.csv', index=False, header=False)
-    #fp = open(args.file, 'r')
-    
-
-'''
-def append_to(list_to_append, filename = "output.csv"):
-    """append list to csv file"""
-    with open(filename, 'a') as output_file:
-        wr = csv.writer(output_file, quoting=csv.QUOTE_ALL)
-        wr.writerow(list_to_append)
-'''
-
-def separate(to_separate):
-    """
-    separates negative and positive transactions from a wells fargo csv file
-    outputs: income.csv, expense.csv
-    """
-    print(f"...separating {to_separate}")
-    fp = open(to_separate, 'r')
-    for line in fp:
-        line = line_to_list(line)
-        number = float(line[1])
-        if number < 0:
-            append_to(line, "expense.csv")
-        elif number > 0:
-            append_to(line, "income.csv")
-        else:
-            print('ERROR: missing edge case, not greather than or less than zero')
-            fp.close()
-            sys.exit("\nQuitting Program")
-    fp.close()
-    print('done!')
