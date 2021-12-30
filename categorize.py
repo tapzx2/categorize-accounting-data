@@ -31,10 +31,19 @@ categories = [
     "Janitor and cleaning"
 ]
 
-filters = {}
+filters = {"Aoufe":"Rent"}
 
 header5 = ["date", "amount", "idk", "empty1", "details"]
 header6 = header5 + ["category"]
+
+def filter(df, filters):
+    print("running filter program")
+    for key, value in filters.items():
+        print(key, value)
+        df.loc[df['details'].str.contains(key, case=False), "category"] = value
+    #df.loc[df['details'].str.contains("Aoufe", case=False), "category"] = "Rent"
+    print(df)
+
 
 def write(df, start):
     current_row_index = start
@@ -68,9 +77,13 @@ elif os.path.isfile(args.file):
 
     # number of rows
     print(df.shape[0])
+    print(df)
+    filter(df, filters)
+    
+
     # first blank link of category column
-    start = df["category"].ne('').idxmax()
-    write(df, start)
+    #start = df["category"].ne('').idxmax()
+    #write(df, start)
 
     # filter()
     
