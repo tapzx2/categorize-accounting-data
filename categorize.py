@@ -19,6 +19,19 @@ def exit_program():
 
 def new_filter():
     print("creating filter...")
+    #print(df.at[start_index, 'category'])
+    print("input a string to match on from details")
+    user_input_match = input()
+    print("input the number to map to from data value")
+    user_input_map = input()
+    try:
+        if int(user_input_map) in range (0, len(categories)):
+            filters[user_input_match] = categories[int(user_input_map)]
+    except:
+        print("user input: " + user_input_map)
+        print("this input is no good, please try again")
+        new_filter()
+    
 
 def undo():
     print("undoing previous entry...")
@@ -35,6 +48,7 @@ commands = {
 
 command_keys = [key for key in commands.keys()]
 
+# feel free to edit the categories to suit your needs
 categories = [
     "Advertising",
     "Insurance",
@@ -50,9 +64,7 @@ categories = [
     "Owner draw",
     "Janitor and cleaning"
 ]
-
 categories_str = ''
-
 for i in range(0, len(categories)):
     categories_str += f'{i} : {categories[i]}\n'
 
@@ -110,8 +122,7 @@ if 'uncategorized' in df['category'].values:
         user_input = input()
         for key, value in commands.items():
             if user_input == key:
-                    value()
-                    continue
+                value()
         try:
             if int(user_input) in range (0, len(categories)):
                 print(f"{user_input} selected")
@@ -121,11 +132,10 @@ if 'uncategorized' in df['category'].values:
             else:
                 print("that number isn't a category")
         except:
-            print("I don't think you put a proper input in...")
+            print("nothing written...")
 
         else:
-            "user input not valid, please try again"
-        print("continuing...")
+            print("continuing...")
         
         #print(df)
 
