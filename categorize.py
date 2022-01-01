@@ -77,7 +77,13 @@ for i in range(0, len(categories)):
 
 filter_file = "filters.json"
 
+def create_if_none(file_name):
+    if os.path.isfile(file_name) is False:
+        file = open(f"{file_name}", "w") 
+        file.close()
+
 def load_json(file_name):
+    create_if_none(file_name)
     open_file = open(f"{file_name}", 'r')
     return_value = json.load(open_file)
     open_file.close()
