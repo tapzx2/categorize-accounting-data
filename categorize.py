@@ -3,7 +3,7 @@ import argparse
 from datetime import datetime
 import os
 import sys
-
+import json
 
 today = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
 
@@ -27,6 +27,8 @@ def new_filter():
     try:
         if int(user_input_map) in range (0, len(categories)):
             filters[user_input_match] = categories[int(user_input_map)]
+            with open(filter_file, 'w') as outfile:
+                json.dump(filters, outfile, indent=4)
     except:
         print("user input: " + user_input_map)
         print("this input is no good, please try again")
@@ -68,10 +70,20 @@ categories_str = ''
 for i in range(0, len(categories)):
     categories_str += f'{i} : {categories[i]}\n'
 
-filters = {
-    "Aoufe":"Rent",
-    "SRP SUREPAY": "Utilities",
-    "Cleaner": "Janitor and cleaning"}
+#filters = {
+#    "Aoufe":"Rent",
+#    "SRP SUREPAY": "Utilities",
+#    "Cleaner": "Janitor and cleaning"}
+
+filter_file = "filters.json"
+
+def load_json(file_name):
+    open_file = open(f"{file_name}", 'r')
+    return_value = json.load(open_file)
+    open_file.close()
+    return return_value
+
+filters = load_json(filter_file)
 
 header5 = ["date", "amount", "idk", "empty1", "details"]
 header6 = header5 + ["category"]
