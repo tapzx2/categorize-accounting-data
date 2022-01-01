@@ -5,21 +5,27 @@ import os
 import sys
 import json
 
+# used append today to backup files
 today = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
 
+# parse given command line arguments
 parser = argparse.ArgumentParser()
 parser.add_argument('file', type=str, help="this is the file to categorize")
-#parser.add_argument('filters', type=str, help="this is the file that contains your filters")
-#parser.add_argument('categories', type=str, help="this is the file that contains your categories")
 args = parser.parse_args()
 
+# helper function
+def create_if_none(file_name):
+    if os.path.isfile(file_name) is False:
+        file = open(f"{file_name}", "w") 
+        file.close()
+
+# user commands
 def exit_program():
     print('exiting program...')
     sys.exit()
 
 def new_filter():
     print("creating filter...")
-    #print(df.at[start_index, 'category'])
     print("input a string to match on from details")
     user_input_match = input()
     print("input the number to map to from data value")
@@ -33,7 +39,6 @@ def new_filter():
         print("user input: " + user_input_map)
         print("this input is no good, please try again")
         new_filter()
-    
 
 def undo():
     print("undoing previous entry...")
@@ -50,6 +55,7 @@ commands = {
 
 command_keys = [key for key in commands.keys()]
 
+# available categories
 # feel free to edit the categories to suit your needs
 categories = [
     "Advertising",
@@ -70,17 +76,8 @@ categories_str = ''
 for i in range(0, len(categories)):
     categories_str += f'{i} : {categories[i]}\n'
 
-#filters = {
-#    "Aoufe":"Rent",
-#    "SRP SUREPAY": "Utilities",
-#    "Cleaner": "Janitor and cleaning"}
-
+# loading and managing filters
 filter_file = "filters.json"
-
-def create_if_none(file_name):
-    if os.path.isfile(file_name) is False:
-        file = open(f"{file_name}", "w") 
-        file.close()
 
 def load_json(file_name):
     create_if_none(file_name)
@@ -91,15 +88,19 @@ def load_json(file_name):
 
 filters = load_json(filter_file)
 
-header5 = ["date", "amount", "idk", "empty1", "details"]
-header6 = header5 + ["category"]
-
 def filter(df, filters):
     print("running filter program...")
     for key, value in filters.items():
         df.loc[df['details'].str.contains(key, case=False), "category"] = value
     return df
 
+# csv headers
+# these can be changed based on the file you're loading
+# expect to do some debugging ;)
+header5 = ["date", "amount", "idk", "empty1", "details"]
+header6 = header5 + ["category"]
+
+# make backups directory and load input file as df
 def prepare():
     if not os.path.isdir('.backups'):
         try:
@@ -111,6 +112,7 @@ def prepare():
         parser.print_help()
         exit_program()
     elif os.path.isfile(args.file):
+        print('path is file')
         df = pd.read_csv(args.file)
         df_len = len(df.columns)
         if df_len == 5:
@@ -120,18 +122,22 @@ def prepare():
         elif df_len == 6:
             df = pd.read_csv(args.file, names=header6)
             return df
-    #os.rename(f"./{args.file}", f"./.backups/{args.file}_{today}")
+        else:
+            print("    issue here")
+    else:
+        print('issue preparing, nothing returned')
 
 df = prepare()
+print(df)
 
+# main loop
 if 'uncategorized' in df['category'].values:
+    os.rename(f"./{args.file}", f"./.backups/{args.file}_{today}")
     previously_written_row = -1
     while 'uncategorized' in df['category'].values:
         print("time to categorize!")
-        #start_index = df["category"].eq('uncategorized').idxmax()
-        #print(df.iloc[start_index:start_index+1])
-        # WORKING FROM HERE!!! LOOK LOOK HERE!!!
         filter(df, filters)
+        df.to_csv(args.file, header=None, index=None)
         start_index = df["category"].eq('uncategorized').idxmax()
         print("\n===================\n")
         print(df.iloc[start_index:start_index+1])
@@ -154,53 +160,5 @@ if 'uncategorized' in df['category'].values:
 
         else:
             print("continuing...")
-        
-        #print(df)
-
-        # get user input
-        # if user_input = command
-            # run it
-        # elif user_input in range of values for categories
-            # update df row value
-            # write to temp file in case program crashes
-        # else
-            # let user know it was an invalid entry and we're trying again!
-        
 else:
     print('no uncategorized values found')
-#
-# print(df["category"])
-#print(df["category"].eq('uncategorized'))
-#print(df["category"].eq('uncategorized').idxmax())
-#print(type(df["category"].ne('uncategorized').idxmax()))
-#while df["category"].ne('').idxmax() != False:
-#    print("while loop running")
-        # number of rows
-        #print(df.shape[0])
-        #df = filter(df, filters)
-        #start = df["category"].ne('').idxmax()
-        #write(df, start)
-        
-    
-
-    # first blank link of category column
-    
-    
-
-    # filter()
-    
-    # filter()
-    # start = starting_position() - done
-    # write(start)
-        # current_line = start - done
-        # if data entry is normal, continue write
-        # elif data entry is undo, go back one
-        # elif data entry is new_filter
-            # create_new_filter()
-            # filter ()
-            # write(start)
-        #elif data entry is exit, quit - done
-        # else, invalid entry error
-    #read 
-
-    # filter(new_filter())
