@@ -1,0 +1,24 @@
+#!/bin/zsh
+
+# this is a sketch using bash to do the categorization
+
+# resources
+##  https://stackoverflow.com/questions/6022384/bash-tool-to-get-nth-line-from-a-file/6022431
+## https://unix.stackexchange.com/questions/64736/combine-the-output-of-two-commands-in-bash
+## https://www.grymoire.com/Unix/Sed.html#uh-61
+
+echo "" > cat_output.csv;
+
+for i in {1..5};
+do
+  sed "${i}q;d" sample_accounting_data.csv | tee temp | cat;
+  cat temp | tr -d '\n' > temp3;
+  echo "Write category";
+  read expense;
+  echo ",\"$expense\"" > temp2  
+  cat temp3 temp2  >> cat_output.csv
+
+done 
+
+rm temp temp2 temp3
+cat cat_output.csv
