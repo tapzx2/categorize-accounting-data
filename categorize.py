@@ -115,10 +115,12 @@ def prepare():
         print('path is file')
         df = pd.read_csv(args.file)
         df_len = len(df.columns)
+        # file has never been categorized before
         if df_len == 5:
             df = pd.read_csv(args.file, names=header5)
             df[header6[5]] = "uncategorized"
             return df
+        # file has been touched by categorize.py before
         elif df_len == 6:
             df = pd.read_csv(args.file, names=header6)
             return df

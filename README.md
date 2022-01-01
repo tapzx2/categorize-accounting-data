@@ -1,56 +1,22 @@
 # Read Me
 
-## Next Step
+separate.py separates accounting data into income and expense.
 
-make "separate" and "categorize" should be 2 different programs
+categorize.py uses filters and terminal to assist user in categorizing accoutning data
 
-## Old Info
+summarize.py (not built yet) outputs the summary needed for accountants.
 
-problem: I really don't want to do our accounting each year. It involves:
+## Purpose
 
-- labeling each expense
-- summing values of each expense
-- submitting to accountant
+I dread categorizing our small business expenses. So much clicking and human error. This dread motivated a python capstone project!
 
-## Basic Sketch
+## Next Steps
 
-```text
-Display csv file, line by line
-Get user input
-Append user input to outputfile
-```
+categorize.py could use a code review.
 
-Current goal:
+### Small Issues
 
-mvp. Don't offer command options.
-
-End goal:
-
-```text
-"""
-    NAME
-        run.py -- utility to make small business accounting easier
-    
-    SYNOPSIS
-        run.py --separate="FILE_PATH" | --categorize="FILE_PATH" [--common="FILE_PATH"] [--categories="FILE_PATH"]
-
-    DESCRIPTION
-        The following options are available:
-
-        --separate    Separate transactions file into income.csv and expenses.csv. Will error if there are transactions of zero.
-
-        --categorize  Adds column to file and prompts user for categorization of each transaction. Once in this mode adjustments to common values and acceptable categorize can be made.
-
-        --common      Specifies custom file for common values. File must be in .json format.
-
-        --categories  Specifies custom file for category values. File must be in .json format.
-"""
-```
-
-Once in categorize mode commands to add:
-
-- save changes
-- quit
-- start again from last point
-- add a common value
-- add a category
+- double undo
+- categorize.py, exit, categorize.py creates a second backup
+- does not handle anything but wells fargo structred csv files
+- categories list could be alpha sort
